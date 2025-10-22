@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 3rem;
+  margin-bottom: 50px;
+  color: #ff6b6b;
+}
+
+.cards-container {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  width: 220px;
+  height: 300px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-front {
+  background: #ffffff;
+  border: 2px solid #ddd;
+  color: #333;
+}
+
+.card-back {
+  background: #ff6b6b;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+#truthCard .card-back {
+  background: #4ecdc4;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+#resetBtn {
+  margin-top: 40px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: #ff6b6b;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+#resetBtn:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    width: 180px;
+    height: 250px;
+  }
+
+  #resetBtn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}

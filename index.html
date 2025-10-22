@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Truth or Dare</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet">
 </head>
-<body>
-  <div class="container">
-    <h1>Truth or Dare</h1>
 
-    <div id="name-section">
-      <label for="playerName">Enter your name:</label>
-      <input type="text" id="playerName" placeholder="Your name" />
-      <button id="startBtn">Start Game</button>
-    </div>
+<body>
+  <div class="game-wrapper">
+    <header>
+      <h1>Truth or Dare</h1>
+      <p class="subtitle">Gather your friends and let’s see who’s the bravest!</p>
+    </header>
+
+    <main>
+      <div class="entry-card">
+        <label for="playerName">Add Player:</label>
+        <div class="input-group">
+          <input type="text" id="playerName" placeholder="Enter name..." />
+          <button id="addBtn">Add </button>
+        </div>
+
+        <div class="player-list">
+          <h3>Players</h3>
+          <ul id="list"></ul>
+        </div>
+
+        <button id="startBtn" class="start-btn">Start Game</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>Tip: Add at least two players to begin!</p>
+    </footer>
+  </div>
+
+  <!-- Fun Characters -->
+  <!-- <img src="assets/1.png" alt="Character" class="char char1" />
+  <img src="assets/2.png" alt="Character" class="char char2" />
+  <img src="assets/3.png" alt="Character" class="char char3" />
+  <img src="assets/4.png" alt="Character" class="char char4" /> -->
 
   <script src="script.js"></script>
 </body>
+
 </html>

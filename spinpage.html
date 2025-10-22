@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Truth or Dare - Spinner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Truth or Dare - Spin the Wheel</title>
+  <link rel="stylesheet" href="spinpage.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
-  <h1>Spin the Wheel!</h1>
+  <div class="spinner-wrapper">
+    <h1>Spin the Wheel of <span>Fun!</span></h1>
 
-  <!-- Arrow pointing to the top of the wheel -->
-  <div class="arrow"></div>
+    <div class="wheel-area">
+      <div class="arrow"></div>
+      <canvas id="wheel" width="400" height="400"></canvas>
+    </div>
 
-  <!-- Canvas for drawing the spinning wheel -->
-  <canvas id="wheel" width="500" height="500"></canvas>
+    <button id="spinBtn">Spin Now!</button>
 
-  <!-- Spin button -->
-  <br />
-  <button onclick="spin()">Spin</button>
+    <p class="note">Who’s next? Let fate decide!</p>
+  </div>
 
-  <!-- JS will be added separately -->
-  <script src="script.js"></script>
+  <div class="bg-bubbles">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <script src="spinner.js"></script>
 </body>
+
 </html>
