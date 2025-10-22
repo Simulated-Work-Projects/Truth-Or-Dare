@@ -1,0 +1,103 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #333;
+  flex-direction: column;
+}
+
+.spinner-wrapper {
+  text-align: center;
+  z-index: 5;
+}
+
+h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #ff6b6b;
+}
+
+h1 span {
+  color: #ffd93d;
+}
+
+.wheel-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow {
+  position: absolute;
+  top: -20px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid #ffd93d;
+  z-index: 10;
+}
+
+#wheel {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: conic-gradient(#ffadad 0deg 45deg,
+      #ffd6a5 45deg 90deg,
+      #caffbf 90deg 135deg,
+      #9bf6ff 135deg 180deg,
+      #a0c4ff 180deg 225deg,
+      #bdb2ff 225deg 270deg,
+      #ffc6ff 270deg 315deg,
+      #fffffc 315deg 360deg);
+  border: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+#spinBtn {
+  margin-top: 30px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: #ff6b6b;
+  border: none;
+  color: #fff;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#spinBtn:hover {
+  transform: scale(1.05);
+  background: #ffd93d;
+  color: #333;
+}
+
+.note {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-900px) scale(1.1);
+    opacity: 0;
+  }
+}

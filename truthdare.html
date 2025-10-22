@@ -1,25 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Truth or Dare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="truthdare.css">
 </head>
-<body>
-  <h1>Your Turn! Will You Choose Truth or Dare?</h1>
 
-  <div class="box-container">
-    <!-- Truth Box -->
-    <div class="box" id="truthBox">
-      <h2>Truth</h2>
-      <p>Answer an honest question about yourself. Ready to reveal a secret?</p>
+<body>
+  <h1>Truth or Dare?</h1>
+
+  <div class="cards-container">
+    <!-- Truth Card -->
+    <div class="card" id="truthCard">
+      <div class="card-inner">
+        <div class="card-front">
+          <h2>Truth</h2>
+          <p>Click to reveal your question</p>
+        </div>
+        <div class="card-back">
+          <h2>Truth!</h2>
+          <p id="truthText">Are you ready?</p>
+        </div>
+      </div>
     </div>
 
-    <!-- Dare Box -->
-    <div class="box" id="dareBox">
-      <h2>Dare</h2>
-      <p>Complete a fun or crazy challenge. Are you brave enough?</p>
+    <!-- Dare Card -->
+    <div class="card" id="dareCard">
+      <div class="card-inner">
+        <div class="card-front">
+          <h2>Dare</h2>
+          <p>Click to get a challenge</p>
+        </div>
+        <div class="card-back">
+          <h2>Dare!</h2>
+          <p id="dareText">Do something fun!</p>
+        </div>
+      </div>
     </div>
   </div>
+
+  <button id="resetBtn"> Play Again</button>
+
+  <script src="truthdare.js"></script>
 </body>
+
 </html>

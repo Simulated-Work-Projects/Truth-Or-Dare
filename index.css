@@ -1,0 +1,193 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+.game-wrapper {
+  text-align: center;
+  width: 90%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 35px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 5;
+}
+
+h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.entry-card label {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+#playerName {
+  padding: 10px 12px;
+  width: 60%;
+  border-radius: 8px 0 0 8px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+#addBtn {
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+#addBtn:hover {
+  background: #ff8787;
+  transform: scale(1.05);
+}
+
+.player-list {
+  margin-top: 15px;
+}
+
+.player-list h3 {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+#list {
+  list-style: none;
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+#list li {
+  background: rgba(255, 255, 255, 0.15);
+  margin: 5px auto;
+  width: 80%;
+  border-radius: 8px;
+  padding: 6px;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+#list li:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.start-btn {
+  margin-top: 20px;
+  background: #6a00f4;
+  color: white;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.start-btn:hover {
+  background: #9747ff;
+  transform: scale(1.05);
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.char {
+  position: absolute;
+  width: 60px;
+  opacity: 0.7;
+  animation: float 4s ease-in-out infinite;
+  z-index: 2;
+}
+
+.char1 {
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.char2 {
+  bottom: 10%;
+  right: 10%;
+  animation-delay: 1s;
+}
+
+.char3 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.char4 {
+  bottom: 20%;
+  left: 10%;
+  animation-delay: 1.5s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
