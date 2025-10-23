@@ -11,12 +11,20 @@
 </head>
 
 <body>
-  <div class="spinner-wrapper">
+  <!-- add a data-players attribute (set to desired number or update dynamically via JS) -->
+  <div class="spinner-wrapper" data-players="6">
     <h1>Spin the Wheel of <span>Fun!</span></h1>
 
     <div class="wheel-area">
       <div class="arrow"></div>
+
+      <!-- top pointed stopper (will visually stop the wheel) -->
+      <div class="stopper" aria-hidden="true"></div>
+
       <canvas id="wheel" width="400" height="400"></canvas>
+
+      <!-- center pin / stopper -->
+      <div class="pin" aria-hidden="true"></div>
     </div>
 
     <button id="spinBtn">Spin Now!</button>
@@ -29,7 +37,7 @@
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
-  <script src="spinner.js"></script>
+  <script src="spinpage.js"></script>
 </body>
 
 </html>
