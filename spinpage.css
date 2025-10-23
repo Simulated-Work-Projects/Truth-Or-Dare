@@ -1,103 +1,443 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  height: 100vh;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  color: #333;
-  flex-direction: column;
-}
-
-.spinner-wrapper {
-  text-align: center;
-  z-index: 5;
-}
-
-h1 {
-  font-family: 'Fredoka One', cursive;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: #ff6b6b;
-}
-
-h1 span {
-  color: #ffd93d;
-}
-
-.wheel-area {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.arrow {
-  position: absolute;
-  top: -20px;
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 25px solid #ffd93d;
-  z-index: 10;
-}
-
-#wheel {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: conic-gradient(#ffadad 0deg 45deg,
-      #ffd6a5 45deg 90deg,
-      #caffbf 90deg 135deg,
-      #9bf6ff 135deg 180deg,
-      #a0c4ff 180deg 225deg,
-      #bdb2ff 225deg 270deg,
-      #ffc6ff 270deg 315deg,
-      #fffffc 315deg 360deg);
-  border: 4px solid rgba(255, 255, 255, 0.3);
-}
-
-#spinBtn {
-  margin-top: 30px;
-  padding: 12px 30px;
-  font-size: 1rem;
-  font-weight: 500;
-  background: #ff6b6b;
-  border: none;
-  color: #fff;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-#spinBtn:hover {
-  transform: scale(1.05);
-  background: #ffd93d;
-  color: #333;
-}
-
-.note {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-@keyframes rise {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 0.6;
+:root{
+      --bg1: #f5efe6;   /* warm beige */
+      --bg2: #efe5d8;   /* soft cream */
+      --card: rgba(31,20,12,0.04);
+      --accent: #b86b3f; /* terracotta */
+      --accent-2: #a68a55; /* olive/golden */
+      --glass: rgba(255,255,255,0.06);
+      --text: #3b2f2a;   /* deep earthy text */
+      --muted: #7a6250;
   }
 
-  100% {
-    transform: translateY(-900px) scale(1.1);
-    opacity: 0;
+  /* reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:var(--text);
+    background: radial-gradient(900px 420px at 10% 20%, rgba(168,138,85,0.08), transparent),
+                linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:grid;
+    place-items:center;
+    padding:48px 24px;
+    min-height:100vh;
   }
-}
+
+  /* container */
+  .spinner-wrapper{
+    width:420px;
+    max-width:95vw;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,244,236,0.8));
+    border-radius:18px;
+    padding:28px;
+
+    /* center all content inside the card */
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* header / wheel / controls */
+    gap: 14px;
+    align-items: center;
+    justify-items: center;
+    align-content: center;   /* ensure vertical centering of grid content */
+    text-align:center;
+    box-shadow: 0 10px 30px rgba(59,47,42,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+    border:1px solid rgba(59,47,42,0.06);
+    backdrop-filter: blur(6px) saturate(1.05);
+    min-height: 480px;
+  }
+
+  /* ensure any form inside the wrapper doesn't push layout and is centered */
+  .spinner-wrapper > form {
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  /* heading - remove asymmetric margins that shift visual center */
+  .spinner-wrapper h1{
+    font-family: "Fredoka One", "Poppins", sans-serif;
+    font-size:1.6rem;
+    margin:0 0 8px 0; /* reset margins */
+    letter-spacing:0.4px;
+    color:var(--muted);
+  }
+  .spinner-wrapper h1 span{
+    color:var(--accent);
+    text-shadow: 0 6px 18px rgba(184,107,63,0.12);
+  }
+
+  /* wheel area */
+  .wheel-area{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0; /* removed previous top/bottom margins so grid controls spacing */
+    width:var(--wheel-size,400px);
+    height:var(--wheel-size,400px);
+    max-width:86vw;
+    max-height:86vw;
+    overflow:visible; /* allow stopper to overlap */
+    text-align:center; /* ensure inline children centered if any */
+    justify-self:center; /* ensure grid places wheel-area in center horizontally */
+    align-self:center;   /* ensure vertical centering in the grid row */
+  }
+  #wheel{
+    display:block;      /* ensure canvas centers inside .wheel-area */
+    margin:0 auto;      /* centre the canvas */
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    transform-origin:center center;
+    cursor:grab;
+    transition: box-shadow .18s ease;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  #wheel:active{cursor:grabbing}
+  /* ensure arrow/stoppers remain positioned relative to wheel center */
+  .wheel-area .arrow{
+    --w:20px;
+    position:absolute;
+    left:50%;
+    top:-12px;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:var(--w) solid transparent;
+    border-right:var(--w) solid transparent;
+    border-bottom:30px solid var(--accent);
+    filter:drop-shadow(0 6px 12px rgba(168,106,78,0.12));
+    z-index:40;
+    border-radius:2px;
+  }
+
+  /* spin button */
+  #spinBtn{
+    display:inline-block;
+    margin-top:8px;
+    background: linear-gradient(180deg,var(--accent), var(--accent-2));
+    color: #fff8ef;
+    border:none;
+    padding:12px 22px;
+    font-weight:600;
+    font-size:1rem;
+    border-radius:12px;
+    box-shadow: 0 8px 22px rgba(166,138,85,0.12);
+    cursor:pointer;
+    transition: transform .14s ease, box-shadow .14s ease, opacity .12s;
+    outline: none;
+    margin-right:0;
+  }
+  #spinBtn:hover{ transform: translateY(-3px); }
+  #spinBtn:active{ transform: translateY(0); box-shadow: 0 6px 14px rgba(166,138,85,0.10); }
+  #spinBtn:focus-visible{ box-shadow: 0 0 0 4px rgba(166,138,85,0.12); }
+
+  /* note */
+  .note{
+    margin-top:12px;
+    font-size:.95rem;
+    color: rgba(59,47,42,0.8);
+    margin:0;
+  }
+
+  /* background bubbles */
+  .bg-bubbles{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-bubbles span{
+    position:absolute;
+    bottom:-120px;
+    background: linear-gradient(180deg, rgba(166,138,85,0.06), rgba(255,255,255,0.02));
+    border-radius:50%;
+    opacity:.12;
+    filter: blur(8px);
+    animation: rise 14s linear infinite;
+  }
+
+  /* size/positions for each bubble for variety */
+  .bg-bubbles span:nth-child(1){ left:6%; width:120px; height:120px; animation-duration:16s; animation-delay:0s; opacity:.08; }
+  .bg-bubbles span:nth-child(2){ left:22%; width:60px; height:60px; animation-duration:18s; animation-delay:3s; opacity:.06; }
+  .bg-bubbles span:nth-child(3){ left:36%; width:90px; height:90px; animation-duration:20s; animation-delay:6s; opacity:.05; }
+  .bg-bubbles span:nth-child(4){ left:50%; width:140px; height:140px; animation-duration:22s; animation-delay:2s; opacity:.07; }
+  .bg-bubbles span:nth-child(5){ left:68%; width:50px; height:50px; animation-duration:15s; animation-delay:4s; opacity:.05; }
+  .bg-bubbles span:nth-child(6){ left:80%; width:110px; height:110px; animation-duration:19s; animation-delay:1s; opacity:.06; }
+  .bg-bubbles span:nth-child(7){ left:88%; width:40px; height:40px; animation-duration:13s; animation-delay:8s; opacity:.04; }
+  .bg-bubbles span:nth-child(8){ left:14%; width:70px; height:70px; animation-duration:21s; animation-delay:5s; opacity:.05; }
+  .bg-bubbles span:nth-child(9){ left:42%; width:35px; height:35px; animation-duration:17s; animation-delay:9s; opacity:.04; }
+  .bg-bubbles span:nth-child(10){ left:62%; width:28px; height:28px; animation-duration:12s; animation-delay:7s; opacity:.03; }
+
+  @keyframes rise{
+    0%{ transform: translateY(0) scale(.6); opacity:0 }
+    10%{ opacity:.12 }
+    50%{ opacity:.06; transform: translateY(-55vh) scale(1) }
+    100%{ transform: translateY(-120vh) scale(1.2); opacity:0 }
+  }
+
+  /* --- wheel sizing / label sizing driven by data-players --- */
+  .spinner-wrapper { --wheel-size: 320px; --label-size: 14px; }
+
+  /* example presets for common player counts — scaled down */
+  .spinner-wrapper[data-players="2"] { --wheel-size: 256px; --label-size: 16px; }
+  .spinner-wrapper[data-players="3"] { --wheel-size: 272px; --label-size: 15px; }
+  .spinner-wrapper[data-players="4"] { --wheel-size: 288px; --label-size: 15px; }
+  .spinner-wrapper[data-players="6"] { --wheel-size: 320px; --label-size: 14px; }
+  .spinner-wrapper[data-players="8"] { --wheel-size: 336px; --label-size: 13px; }
+  .spinner-wrapper[data-players="10"]{ --wheel-size: 352px; --label-size: 12px; }
+  .spinner-wrapper[data-players="12"]{ --wheel-size: 384px; --label-size: 11px; }
+
+  /* default uses variable */
+  .wheel-area{
+    width: var(--wheel-size);
+    height: var(--wheel-size);
+    max-width:86vw;
+    max-height:86vw;
+  }
+
+  /* label styling hint — if spinner.js draws labels on canvas you should use --label-size there,
+    otherwise use this for any HTML labels placed over wheel */
+  .wheel-label {
+    font-size: var(--label-size);
+    color: var(--text);
+    font-weight:600;
+    pointer-events:none;
+    user-select:none;
+  }
+
+  /* --- center pin (visual stopper) --- */
+  .wheel-area .pin{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background: linear-gradient(180deg, #fff7f0, var(--accent));
+    box-shadow: 0 6px 12px rgba(59,47,42,0.12), inset 0 -2px 6px rgba(255,255,255,0.35);
+    z-index:60;
+    pointer-events:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* pin head (tiny screw) */
+  .wheel-area .pin::before{
+    content: "";
+    width:10px;
+    height:10px;
+    background: var(--muted);
+    border-radius:50%;
+    box-shadow: inset 0 -1px 2px rgba(255,255,255,0.12);
+    transform:translateY(-1px);
+  }
+
+  /* optional vertical stopper spike to interact visually with wheel edge */
+  .wheel-area .pin::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-60%);
+    width:6px;
+    height:34%;
+    background: linear-gradient(180deg, rgba(59,47,42,0.2), rgba(59,47,42,0.08));
+    border-radius:3px;
+    opacity:.9;
+    pointer-events:none;
+  }
+
+  /* make the pin slightly larger on larger wheels */
+  .spinner-wrapper[data-players="12"] .wheel-area .pin{ width:26px; height:26px; }
+  .spinner-wrapper[data-players="2"]  .wheel-area .pin{ width:18px; height:18px; }
+
+  /* ensure canvas sits under the pin */
+  #wheel{ z-index:30; position:relative; }
+
+  /* top arrow stays above wheel */
+  .wheel-area .arrow{ z-index:70; }
+
+  /* small accessible state when wheel is spinning */
+  .spinner-wrapper.spinning .pin{ transform:translate(-50%,-50%) rotate(4deg); transition: transform .18s ease; }
+
+  /* top pointed stopper (long pin that visually 'stops' the wheel) */
+  .stopper{
+    position:absolute;
+    top:-56px; /* sits above the wheel rim */
+    left:50%;
+    transform:translateX(-50%) rotate(0deg);
+    width:6px;
+    height:72px;
+    background: linear-gradient(180deg, rgba(59,47,42,0.12), rgba(59,47,42,0.04));
+    border-radius:3px;
+    box-shadow: 0 8px 20px rgba(59,47,42,0.08), inset 0 -3px 6px rgba(255,255,255,0.02);
+    z-index:120;
+    pointer-events:none;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+  }
+
+  /* the pointed tip */
+  .stopper::after{
+    content:"";
+    width:0;
+    height:0;
+    border-left:10px solid transparent;
+    border-right:10px solid transparent;
+    border-top:18px solid var(--muted); /* tip colour */
+    display:block;
+    margin-bottom:-6px;
+    filter: drop-shadow(0 4px 10px rgba(59,47,42,0.08));
+    transform-origin:center;
+  }
+
+  /* small "tick" animation when wheel stops */
+  .stopper.tap {
+    animation: stopper-tap .28s ease 1;
+  }
+  @keyframes stopper-tap{
+    0%   { transform: translateX(-50%) rotate(0deg) translateY(0) }
+    55%  { transform: translateX(-50%) rotate(-6deg) translateY(6px) }
+    100% { transform: translateX(-50%) rotate(0deg) translateY(0) }
+  }
+
+  /* ensure arrow still visible above stopper if needed */
+  .wheel-area .arrow{ z-index:130; position: absolute; top:-24px; left:50%; transform:translateX(-50%); }
+
+  /* keep center pin and wheel stacking correct */
+  #wheel{ z-index:30; position:relative; }
+  .wheel-area .pin{ z-index:90; }
+
+  /* CSS-only compartment colouring for the wheel.
+    Uses conic-gradient backgrounds on #wheel driven by the wrapper's data-players.
+    Each rule assigns neutral / earthy tones for equal-sized compartments.
+    (If spinner.js draws on the canvas you'll need to remove/disable that drawing
+    for the CSS background to be visible.) */
+
+  /* 2 players (180deg each) */
+  .spinner-wrapper[data-players="2"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 180deg,
+      #e1d4b8 180deg 360deg
+    );
+  }
+
+  /* 3 players (120deg each) */
+  .spinner-wrapper[data-players="3"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 120deg,
+      #eadfc9 120deg 240deg,
+      #d9caa5 240deg 360deg
+    );
+  }
+
+  /* 4 players (90deg each) */
+  .spinner-wrapper[data-players="4"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 90deg,
+      #eadfc9 90deg 180deg,
+      #e1d4b8 180deg 270deg,
+      #cfb995 270deg 360deg
+    );
+  }
+
+  /* 6 players (60deg each) */
+  .spinner-wrapper[data-players="6"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 60deg,
+      #eadfc9 60deg 120deg,
+      #e1d4b8 120deg 180deg,
+      #d9caa5 180deg 240deg,
+      #cfb995 240deg 300deg,
+      #c2a67f 300deg 360deg
+    );
+  }
+
+  /* 8 players (45deg each) */
+  .spinner-wrapper[data-players="8"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 45deg,
+      #eadfc9 45deg 90deg,
+      #e1d4b8 90deg 135deg,
+      #d9caa5 135deg 180deg,
+      #cfb995 180deg 225deg,
+      #c2a67f 225deg 270deg,
+      #b08967 270deg 315deg,
+      #9a7553 315deg 360deg
+    );
+  }
+
+  /* 10 players (36deg each) */
+  .spinner-wrapper[data-players="10"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 36deg,
+      #eadfc9 36deg 72deg,
+      #e1d4b8 72deg 108deg,
+      #d9caa5 108deg 144deg,
+      #cfb995 144deg 180deg,
+      #c2a67f 180deg 216deg,
+      #b08967 216deg 252deg,
+      #9a7553 252deg 288deg,
+      #866047 288deg 324deg,
+      #724d39 324deg 360deg
+    );
+  }
+
+  /* 12 players (30deg each) */
+  .spinner-wrapper[data-players="12"] #wheel{
+    background-image: conic-gradient(
+      from -90deg,
+      #efe6d6 0deg 30deg,
+      #eadfc9 30deg 60deg,
+      #e1d4b8 60deg 90deg,
+      #d9caa5 90deg 120deg,
+      #cfb995 120deg 150deg,
+      #c2a67f 150deg 180deg,
+      #b08967 180deg 210deg,
+      #9a7553 210deg 240deg,
+      #866047 240deg 270deg,
+      #724d39 270deg 300deg,
+      #a68a55 300deg 330deg,
+      #efe6d6 330deg 360deg
+    );
+  }
+
+  /* optional: thin separators using a transparent + hairline overlay pseudo-element */
+  .wheel-area::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    left:0;
+    top:0;
+    pointer-events:none;
+    border-radius:50%;
+    background-image:
+      repeating-conic-gradient(rgba(59,47,42,0.06) 0deg 0.6deg, transparent 0.6deg 360deg);
+    opacity:0.55;
+    mix-blend-mode:overlay;
+    z-index:40;
+  }
+
+  /* responsive tweaks */
+  @media (max-width:420px){
+    .spinner-wrapper{ padding:18px; border-radius:14px }
+    h1{ font-size:1.2rem }
+    .wheel-area{ width:86vw; height:86vw }
+    .wheel-area .arrow{ top:-10px; transform:translateX(-50%) scale(.9) }
+    #spinBtn{ padding:10px 18px; font-size:.95rem }
+  }
