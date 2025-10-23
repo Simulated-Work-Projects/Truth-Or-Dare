@@ -14,7 +14,6 @@ const truths = [
   "Who in this room do you trust the most?"
 ];
 
-// Updated Dares — with creative replacements
 const dares = [
   "Speak only in rhymes for the next minute.",
   "Sing a song loudly for 10 seconds.",
@@ -38,42 +37,124 @@ const spinBtn = document.getElementById("spinBtn");
 // Prevent multiple flips
 let flipped = false;
 
-// ======== FUNCTIONS ========
+// ======== HELPERS ========
 function getRandomItem(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
+function setCardTextSafely(card, textElement, newText) {
+  // If card is currently flipped (showing front/back), we want to wait until it visually unflips
+  // before changing the text so the user doesn't see the new text appear before flip animation.
+  if (!card.classList.contains("flipped")) {
+    // not flipped: safe to change immediately
+    textElement.textContent = newText;
+    return;
+  }
+
+  // card is flipped: remove flip and wait for transitionend (or timeout) to set text
+  const onTransitionEnd = (ev) => {
+    // make sure it's the transform/flip transition (some CSS might use multiple properties)
+    // if you know the property name, you can check ev.propertyName
+    card.removeEventListener("transitionend", onTransitionEnd);
+    textElement.textContent = newText;
+  };
+
+  // remove flipped state to trigger unflip animation
+  card.classList.remove("flipped");
+
+  // wait for transitionend (fallback to timeout)
+  let transitionFired = false;
+  card.addEventListener("transitionend", (ev) => {
+    transitionFired = true;
+  }, { once: true });
+
+  // Attach a short delay to set the text after the animation finishes:
+  // Prefer transitionend — but fallback after 350ms if it doesn't fire.
+  card.addEventListener("transitionend", onTransitionEnd, { once: true });
+  setTimeout(() => {
+    if (!transitionFired) {
+      // fallback after 350ms
+      card.removeEventListener("transitionend", onTransitionEnd);
+      textElement.textContent = newText;
+    }
+  }, 350);
+}
+
+// Flip card normally (click to reveal)
 function flipCard(card) {
   if (flipped) return; // only one card at a time
   card.classList.add("flipped");
   flipped = true;
 }
 
+// Reset but set new random statements *after* unflip so text change isn't visible prematurely
 function resetCards() {
+  // If neither card is flipped just set new text immediately
+  if (!truthCard.classList.contains("flipped") && !dareCard.classList.contains("flipped")) {
+    truthText.textContent = getRandomItem(truths);
+    dareText.textContent = getRandomItem(dares);
+    flipped = false;
+    playSound?.("reset");
+    return;
+  }
+
+  // If any card is flipped, unflip them and set new text after unflip animation
   truthCard.classList.remove("flipped");
   dareCard.classList.remove("flipped");
-  truthText.textContent = "Are you ready?";
-  dareText.textContent = "Do something fun!";
-  flipped = false;
-  playSound("reset");
+
+  // Wait for both to finish transition (simple approach: setTimeout fallback)
+  let settled = false;
+  const setBothTexts = () => {
+    if (settled) return;
+    settled = true;
+    truthText.textContent = getRandomItem(truths);
+    dareText.textContent = getRandomItem(dares);
+    flipped = false;
+    playSound?.("reset");
+  };
+
+  // Try to listen for transitionend on one of them; fallback timeout
+  let fired = 0;
+  const handler = () => {
+    fired += 1;
+    // wait for at least one transition event or use timeout — this prevents waiting forever
+    if (fired >= 1) setBothTexts();
+  };
+
+  truthCard.addEventListener("transitionend", handler, { once: true });
+  dareCard.addEventListener("transitionend", handler, { once: true });
+  // fallback in case transitionend doesn't fire
+  setTimeout(setBothTexts, 350);
 }
+
+// ======== INITIAL RANDOM DISPLAY ========
+window.addEventListener("DOMContentLoaded", () => {
+  truthText.textContent = getRandomItem(truths);
+  dareText.textContent = getRandomItem(dares);
+});
 
 // ======== EVENT LISTENERS ========
 truthCard.addEventListener("click", () => {
   if (flipped) return;
   flipCard(truthCard);
-  playSound("flip");
+  playSound?.("flip");
+  // set random truth only when revealing (safe because we just flipped)
   truthText.textContent = getRandomItem(truths);
 });
 
 dareCard.addEventListener("click", () => {
   if (flipped) return;
   flipCard(dareCard);
-  playSound("flip");
+  playSound?.("flip");
   dareText.textContent = getRandomItem(dares);
 });
 
-resetBtn.addEventListener("click", resetCards);
+resetBtn.addEventListener("click", () => {
+  // Use safer setter in case one card is still flipped.
+  // This ensures text change happens after unflip.
+  resetCards();
+});
+
 spinBtn.addEventListener("click", () => {
   window.location.href = "spinpage.html"; // redirect to your spin page
 });
