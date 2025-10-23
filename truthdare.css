@@ -3,10 +3,24 @@
   padding: 0;
   box-sizing: border-box;
 }
+ 
+:root {
+  --bg1: #f5efe6;   /* warm beige */
+  --bg2: #efe5d8;   /* soft cream */
+  --card: rgba(31,20,12,0.04);
+  --accent: #b86b3f; /* terracotta */
+  --accent-2: #a68a55; /* olive/golden */
+  --glass: rgba(255,255,255,0.06);
+  --text: #3b2f2a;   /* deep earthy text */
+  --muted: #7a6250;
+}
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);  color: #333;
+  /* Beige warm gradient with subtle radial overlay */
+  background: radial-gradient(900px 420px at 10% 20%, rgba(168,138,85,0.08), transparent),
+              linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+  color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,7 +32,7 @@ h1 {
   font-family: 'Fredoka One', cursive;
   font-size: 3rem;
   margin-bottom: 50px;
-  color: #ff6b6b;
+  color: var(--accent-2); /* warm brown */
 }
 
 .cards-container {
@@ -61,24 +75,28 @@ h1 {
   padding: 15px;
   text-align: center;
   font-weight: 500;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(59,47,42,0.08);
 }
+
 
 .card-front {
-  background: #ffffff;
-  border: 2px solid #ddd;
-  color: #333;
+  background: var(--bg1); /* off-white beige */
+  border: 2px solid rgba(59,47,42,0.06); /* light beige border */
+  color: var(--text);
 }
 
+/* card back uses a soft brown with good contrast */
 .card-back {
-  background: #ff6b6b;
-  color: white;
+  background: var(--card); /* subtle card overlay */
+  color: var(--text);
   transform: rotateY(180deg);
 }
 
+/* Accent for truth card — slightly lighter beige/peach */
 #truthCard .card-back {
-  background: #4ecdc4;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(232,217,197,0.9));
 }
+
 
 .card:hover {
   transform: scale(1.05);
@@ -92,10 +110,11 @@ h1 {
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  background: #ff6b6b;
-  color: white;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  color: #fff8ef;
+  font-weight: 600;
+  box-shadow: 0 8px 22px rgba(166,138,85,0.12);
+  transition: transform .14s ease, box-shadow .14s ease, opacity .12s;
 }
 
 #resetBtn:hover {
