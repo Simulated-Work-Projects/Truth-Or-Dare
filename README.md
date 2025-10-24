@@ -50,4 +50,4 @@ Perfect for friends, parties, or just a fun way to pass the time.
 
 ## Team Members:
 
-Sangeeth, Vansh, Khushil, Aadeep, Jannat, Yashasvi.
+Sangeeth, Aaron, Vansh, Khushil, Aadeep, Jannat, Yashasvi.
